@@ -17,8 +17,8 @@ const events = [
 function HomePage() {
   return (
     <div>
-      <div>My Recurring Outlook Events</div>
-      <table data-testid="events-table">
+      <div className="font-xl font-bold pb-10">My Recurring Outlook Events</div>
+      <table data-testid="events-table" className="table-auto w-full">
         <thead>
           <tr>
             <th>Name</th>
@@ -26,10 +26,10 @@ function HomePage() {
           </tr>
         </thead>
         <tbody>
-          {events.map((e) => (
-            <tr>
-              <td>{e.name}</td>
-              <td>{e.recurrence ? e.recurrence.endDate : "N/A"}</td>
+          {events.map((e, index) => (
+            <tr className={index % 2 === 0 ? "bg-gray-200" : ""}>
+              <td className="border">{e.name}</td>
+              <td className="border">{e.recurrence ? e.recurrence.endDate : "N/A"}</td>
             </tr>
           ))}
         </tbody>
