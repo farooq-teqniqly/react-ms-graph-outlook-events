@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, within, cleanup } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import HomePage from "./HomePage";
 import { useCalendarEvents } from "../hooks/useCalendarEvents";
@@ -62,8 +62,78 @@ describe("Outlook Events App", () => {
 
     const recurrenceEndDate = within(eventsTable).getByText("2024-05-01");
     expect(recurrenceEndDate).toBeInTheDocument();
+  });
 
-    const frequency = within(eventsTable).getByText("weekly");
-    expect(frequency).toBeInTheDocument();
+  it("Renders 'No end date' for events with no end date", () => {
+    const mockData = {
+      value: [
+        {
+          id: "event-id",
+          subject: "Product Management Office Hours",
+          recurrence: {
+            range: {
+              endDate: "0001-01-01",
+            },
+            pattern: {
+              type: "weekly",
+            },
+          },
+        },
+      ],
+    };
+
+    render(<HomePage data={mockData} isLoading={false} isError={false}></HomePage>);
+
+    const eventsTable = screen.getByTestId("events-table");
+    const recurrenceEndDate = within(eventsTable).getByText("No end date");
+    expect(recurrenceEndDate).toBeInTheDocument();
+  });
+
+  it("Renders better text for event frequency", () => {
+    const graphFrequencyToAppFrequencyMap = [
+      {
+        from: "absoluteYearly",
+        to: "Yearly",
+      },
+      {
+        from: "relativeMonthly",
+        to: "Monthly",
+      },
+      {
+        from: "weekly",
+        to: "Weekly",
+      },
+      {
+        from: "monthly",
+        to: "Monthly",
+      },
+    ];
+
+    graphFrequencyToAppFrequencyMap.forEach((item) => {
+      const mockData = {
+        value: [
+          {
+            id: "event-id",
+            subject: "Product Management Office Hours",
+            recurrence: {
+              range: {
+                endDate: "0001-01-01",
+              },
+              pattern: {
+                type: item.from,
+              },
+            },
+          },
+        ],
+      };
+
+      render(<HomePage data={mockData} isLoading={false} isError={false}></HomePage>);
+
+      const eventsTable = screen.getByTestId("events-table");
+      const frequency = within(eventsTable).getByText(item.to);
+      expect(frequency).toBeInTheDocument();
+
+      cleanup();
+    });
   });
 });
