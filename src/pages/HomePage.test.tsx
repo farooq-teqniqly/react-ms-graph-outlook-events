@@ -1,15 +1,57 @@
 import { render, screen, within } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "react-query";
 import HomePage from "./HomePage";
+import { useCalendarEvents } from "../hooks/useCalendarEvents";
+
+jest.mock("../hooks/useCalendarEvents");
 
 describe("Outlook Events App", () => {
+  const queryClient = new QueryClient();
+
   it("Renders the header", () => {
-    render(<HomePage></HomePage>);
+    (useCalendarEvents as jest.Mock).mockReturnValue({
+      data: {
+        value: [],
+      },
+      isLoading: false,
+      isError: false,
+    });
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <HomePage url="test-url" />
+      </QueryClientProvider>,
+    );
     const header = screen.getByText("My Recurring Outlook Events");
     expect(header).toBeInTheDocument();
   });
 
   it("Renders the event", () => {
-    render(<HomePage></HomePage>);
+    const mockData = {
+      value: [
+        {
+          id: "event-id",
+          subject: "Product Management Office Hours",
+          recurrence: {
+            range: {
+              endDate: "2024-05-01",
+            },
+          },
+        },
+      ],
+    };
+
+    (useCalendarEvents as jest.Mock).mockReturnValue({
+      data: mockData,
+      isLoading: false,
+      isError: false,
+    });
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <HomePage url="test-url" />
+      </QueryClientProvider>,
+    );
     const eventsTable = screen.getByTestId("events-table");
 
     const eventName = within(eventsTable).getByText("Product Management Office Hours");

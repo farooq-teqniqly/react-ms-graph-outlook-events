@@ -2,11 +2,10 @@ import { CalendarEvent, MicrosoftGraphCalendarEvent } from "../Types";
 import CalendarEventsTable from "../components/CalendarEventsTable";
 import { useCalendarEvents } from "../hooks/useCalendarEvents";
 
-function HomePage() {
-  const { data, isLoading, isError } = useCalendarEvents(
-    "https://graph.microsoft.com/v1.0/me/events?$filter=type eq 'seriesMaster'&select=id,recurrence,subject&top=1000",
-  );
+// @ts-ignore
+import composeHooks from "react-hooks-compose";
 
+const HomePage = ({ data, isLoading, isError, url }: any) => {
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>An error occurred</div>;
 
@@ -26,6 +25,10 @@ function HomePage() {
       <CalendarEventsTable events={events}></CalendarEventsTable>
     </div>
   );
-}
+};
 
-export default HomePage;
+const HomePageContainer = composeHooks((props: any) => ({
+  useCalendarEvents: () => useCalendarEvents(props.url),
+}))(HomePage);
+
+export default HomePageContainer;

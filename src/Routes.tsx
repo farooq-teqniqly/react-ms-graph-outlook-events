@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import NotFoundErrorPage from "./pages/NotFoundErrorPage";
-import HomePage from "./pages/HomePage";
+import HomePageContainer from "./pages/HomePage";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();
@@ -13,7 +13,9 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <HomePage></HomePage>,
+        element: (
+          <HomePageContainer url="https://graph.microsoft.com/v1.0/me/events?$filter=type eq 'seriesMaster'&select=id,recurrence,subject&top=1000"></HomePageContainer>
+        ),
       },
       {
         path: "*",
