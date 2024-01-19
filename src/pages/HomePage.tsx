@@ -15,6 +15,7 @@ const HomePage = ({ data, isLoading, isError, url }: any) => {
     recurrence: event.recurrence
       ? {
           endDate: event.recurrence.range.endDate,
+          frequency: event.recurrence.pattern.type,
         }
       : null,
   }));

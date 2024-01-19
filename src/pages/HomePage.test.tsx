@@ -36,6 +36,9 @@ describe("Outlook Events App", () => {
             range: {
               endDate: "2024-05-01",
             },
+            pattern: {
+              type: "weekly",
+            },
           },
         },
       ],
@@ -59,5 +62,8 @@ describe("Outlook Events App", () => {
 
     const recurrenceEndDate = within(eventsTable).getByText("2024-05-01");
     expect(recurrenceEndDate).toBeInTheDocument();
+
+    const frequency = within(eventsTable).getByText("weekly");
+    expect(frequency).toBeInTheDocument();
   });
 });

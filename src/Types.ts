@@ -27,5 +27,6 @@ export type CalendarEvent = {
   name: string;
   recurrence: {
     endDate: string;
+    frequency: string;
   } | null;
 };

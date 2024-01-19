@@ -11,6 +11,7 @@ function CalendarEventsTable({ events }: Props) {
         <tr>
           <th>Name</th>
           <th>End Date</th>
+          <th>Frequency</th>
         </tr>
       </thead>
       <tbody>
@@ -20,6 +21,7 @@ function CalendarEventsTable({ events }: Props) {
             <td className="border">
               {e.recurrence!.endDate !== "0001-01-01" ? e.recurrence!.endDate : "No end date"}
             </td>
+            <td className="border">{e.recurrence!.frequency}</td>
           </tr>
         ))}
       </tbody>
