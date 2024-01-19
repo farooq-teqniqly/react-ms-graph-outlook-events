@@ -2,6 +2,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import NotFoundErrorPage from "./pages/NotFoundErrorPage";
 import HomePage from "./pages/HomePage";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -21,5 +24,9 @@ const router = createBrowserRouter([
 ]);
 
 export default function Routes() {
-  return <RouterProvider router={router}></RouterProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router}></RouterProvider>
+    </QueryClientProvider>
+  );
 }

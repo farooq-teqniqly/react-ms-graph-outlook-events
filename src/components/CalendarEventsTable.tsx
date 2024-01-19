@@ -17,7 +17,9 @@ function CalendarEventsTable({ events }: Props) {
         {events.map((e, index) => (
           <tr key={e.id} className={index % 2 === 0 ? "bg-gray-200" : ""}>
             <td className="border">{e.name}</td>
-            <td className="border">{e.recurrence ? e.recurrence.endDate : "N/A"}</td>
+            <td className="border">
+              {e.recurrence!.endDate !== "0001-01-01" ? e.recurrence!.endDate : "No end date"}
+            </td>
           </tr>
         ))}
       </tbody>
