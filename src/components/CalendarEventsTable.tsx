@@ -9,19 +9,19 @@ function CalendarEventsTable({ events }: Props) {
     <table data-testid="events-table" className="table-auto w-full">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>End Date</th>
-          <th>Frequency</th>
+          <th className="text-left">Name</th>
+          <th className="text-left">End Date</th>
+          <th className="text-left">Frequency</th>
         </tr>
       </thead>
       <tbody>
         {events.map((e, index) => (
           <tr key={e.id} className={index % 2 === 0 ? "bg-gray-200" : ""}>
-            <td className="border">{e.name}</td>
-            <td className="border">
+            <td className="border text-left">{e.name}</td>
+            <td className="border text-left">
               {e.recurrence!.endDate !== "0001-01-01" ? e.recurrence!.endDate : "No end date"}
             </td>
-            <td className="border">{e.recurrence!.frequency}</td>
+            <td className="border text-left">{e.recurrence!.frequency}</td>
           </tr>
         ))}
       </tbody>
